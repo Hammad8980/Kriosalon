@@ -1,0 +1,39 @@
+﻿@page "/addbusinessowner"
+@using Entities;
+@using ShopAdmin.Data;
+@inject NavigationManager nm;
+@inject IAllBusinessOwner bo;
+
+
+<EditForm Model="BOModel">
+    <input type="text" @bind="@BOModel.firstname" placeholder="Enter First Name"/>
+    <br />
+    <br />
+    <input type="text" @bind="BOModel.lastname" placeholder="Enter Last Name"/>
+    <br />  <br />
+
+    <input type="text" @bind="BOModel.cnic" placeholder="Enter CNIC" />
+    <br />  <br />
+
+    <input type="text" @bind="BOModel.emailadress" placeholder="Enter Email Adress" />
+    <br />  <br />
+
+    <input type="text" @bind="BOModel.phone" placeholder="Enter Phone" />
+    <br />  <br />
+
+    <input type="text" @bind="BOModel.isactive" placeholder="Is your Shop Active" />
+    <br />  <br />
+    <button type="submit" @onclick=saveBO>Save</button>
+</EditForm>
+
+@code {
+    EntBusinessOwner BOModel { get; set; } = new EntBusinessOwner();
+
+    private void saveBO()
+    {
+        Random rand = new Random();
+        BOModel.boid=rand.Next(100000,999999);
+        bo.AddOwner(BOModel);
+        nm.NavigateTo("allbusinessowner");
+    }
+}

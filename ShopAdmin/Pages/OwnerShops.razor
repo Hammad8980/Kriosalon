@@ -1,0 +1,105 @@
+﻿@page "/ownershops/{boid}"
+@using ShopAdmin.Data;
+@using Entities;
+
+@inject IShop so;
+@inject IAllBusinessOwner bo;
+@inject NavigationManager nm;
+
+
+
+<button @onclick="()=>NavigateToAddShop(boid)" class="btn btn-primary">Add Shop</button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Boid</th>
+            <th>City</th>
+            <th>Area</th>
+            <th>Location</th>
+            <th>Phone</th>
+            <th>Url</th>
+            <th>Cover Image</th>
+            <th>Business description</th>
+            <th>Active</th>
+            <th>Delete</th>
+
+        </tr>
+    </thead>
+    @foreach(var item in ListShop)
+    {
+        <tr>
+            <td>@item.shopid</td>
+            <td>@item.boid</td>
+            <td>@item.city</td>
+            <td>@item.area</td>
+            <td>@item.location</td>
+            <td>@item.phone</td>
+            <td>@item.logurl</td>
+            <td>@item.coverimageurl</td>
+            <td>@item.businessdescription</td>
+            <td>@item.isactive</td>
+            <button style="margin:3px" @onclick="()=>DeleteShop(item.shopid)" class="btn btn-danger">Delete</button>
+
+            <button style="margin:3px" @onclick="()=>NavigateToShopEmployee(item.shopid)" class="btn btn-primary">Employee</button>
+
+            <button style="margin:3px" @onclick="()=>NavigateToShopServices(item.shopid)" class="btn btn-primary">Services</button>
+
+            <button style="margin:3px" @onclick="()=>NavigateToShopPackages(item.shopid)" class="btn btn-primary">Packages</button>
+        </tr>
+            }
+         </table>
+
+@code
+{
+    private List<EntShop> ListShop { get; set; } = new List<EntShop>();
+    private int boid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListShop = await so.GetBusinessOwnerShop(boid);
+    }
+
+    [Parameter]
+    public string Boid
+    {
+        get => boid.ToString();
+        set
+        {
+            if (int.TryParse(value, out int parsedBoid))
+            {
+                boid = parsedBoid;
+            }
+        }
+    }
+
+    private async Task NavigateToAddShop(int boid)
+    {
+        nm.NavigateTo($"/addownershop/{boid}");
+    }
+
+    private async Task DeleteShop(int id)
+    {
+
+        await so.DeleteShop(id);
+        ListShop = await so.GetBusinessOwnerShop(boid);
+    }
+
+    private async Task NavigateToShopEmployee(int shopid)
+    {
+        nm.NavigateTo($"/shopemployee/{shopid}");
+
+    }
+    private async Task NavigateToShopServices(int shopid)
+    {
+        nm.NavigateTo($"/shopservices/{shopid}");
+    }
+
+    private async Task NavigateToShopPackages(int shopid)
+    {
+        nm.NavigateTo($"/shoppackages/{shopid}");
+    }
+}
+
+

@@ -1,0 +1,65 @@
+﻿@page "/shopservices/{shopid}"
+
+
+@using Entities;
+@using ShopAdmin.Data;
+@inject IServices se;
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Shop id</th>
+            <th>Service Name</th>
+            <th>Price</th>
+            <th>Is active</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    @foreach (var item in listservices)
+    {
+        <tr>
+            <td>@item.serviceid</td>
+            <td>@item.shopid</td>
+            <td>@item.servicename</td>
+            <td>@item.price</td>
+            <td>@item.isactive</td>
+            <button @onclick="()=>Delete(item.serviceid)">Delete</button>
+        </tr>
+    }
+</table>
+
+
+@code {
+    private List<EntServices> listservices { get; set; } = new List<EntServices>();
+    private int id;
+
+    [Parameter]
+    public string shopid
+    {
+        get=>id.ToString();
+        set
+        {
+            if(int.TryParse(value,out int parsed))
+            {
+                id = parsed;
+            }
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        listservices = await se.GetServices(id);
+    }
+
+    private async Task Delete(int id)
+    {
+        await se.DeleteServices(id);
+        listservices = await se.GetServices(id);
+    }
+
+
+}

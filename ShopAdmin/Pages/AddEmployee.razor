@@ -1,0 +1,76 @@
+﻿@page "/addemployeeshop/{shopid}"
+
+
+@using Entities;
+@using ShopAdmin.Data;
+@inject IEmployee em;
+@inject NavigationManager nm;
+
+<EditForm Model="EmployeeModel">
+    <input type="text" @bind="@EmployeeModel.firstname" placeholder="Enter First Name" />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.lastname" placeholder="Enter last Name" />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.phone" placeholder="Enter phone " />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.dob" placeholder="Enter dob" />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.cnic" placeholder="Enter Cnic" />
+    <br /><br />
+    <input type="text" @bind="@EmployeeModel.padress" placeholder="Enter Permanent Adress" />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.tadress" placeholder="Enter Temporary Adress" />
+    <br /><br />
+    <input type="text" @bind="@EmployeeModel.emptype" placeholder="Enter Employee Type" />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.joiningdate" placeholder="Enter joining date " />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.enddate" placeholder="Enter End Date " />
+    <br />
+    <br />
+    <input type="text" @bind="@EmployeeModel.isactive" placeholder="Status " />
+    <br />
+    <br />
+    <br /><br />
+    <button type="submit" @onclick="SaveEmp">Save</button>
+</EditForm>
+
+
+<h3>AddEmployee</h3>
+
+@code {
+    EntEmployee EmployeeModel { get; set; } = new EntEmployee();
+
+    private int shopid;
+    [Parameter]
+    public string Shopid
+    {
+        get=>shopid.ToString();
+        set
+        {
+            if(int.TryParse(value,out int parsedvalue))
+            {
+                shopid = parsedvalue;
+            }
+        }
+    }
+
+    private void SaveEmp()
+    {
+        Random rand = new Random();
+        EmployeeModel.empid = rand.Next(100000, 999999);
+        EmployeeModel.shopid = shopid;
+        em.SaveEmployee(EmployeeModel);
+        nm.NavigateTo($"/shopemployee/{shopid}");
+
+    }
+
+
+}

@@ -1,0 +1,55 @@
+﻿@page "/addownershop/{Boid:int}";
+
+
+@using Entities;
+@using ShopAdmin.Data;
+
+@inject NavigationManager nm;
+@inject IShop bo;
+
+<br />
+<br />
+
+<h3>AddOwnerShop</h3>
+<br />
+
+<EditForm Model="ShopModel">
+    <input type="text" @bind=ShopModel.businessdescription placeholder="Enter Business Description"/>
+    <br /><br />
+    <input type="text" @bind=ShopModel.city placeholder="Enter City" />
+    <br /><br />
+    <input type="text" @bind=ShopModel.area placeholder="Enter Area" />
+    <br /><br />
+    <input type="text" @bind=ShopModel.location placeholder="Enter Location" />
+    <br /><br />
+    <input type="text" @bind=ShopModel.coverimageurl placeholder="Enter Coverimage" />
+    <br /><br />
+    <input type="text" @bind=ShopModel.logurl placeholder="Enter Logo" />
+    <br /><br />
+    <input type="text" @bind=ShopModel.phone placeholder="Enter Phone" />
+    <br /><br />
+    
+    <button type="submit" @onclick=SaveShop>Save</button>
+</EditForm>
+@code {
+    private int selectedBusinessOwnerId;
+    private EntShop ShopModel { get; set; } = new EntShop();
+
+    [Parameter]
+    public int boid { get; set; }
+
+    private void SaveShop()
+    {
+        Random rand=new Random();
+        ShopModel.shopid = rand.Next(100000, 999999);
+        ShopModel.boid = boid;
+        bo.SaveShop(ShopModel);
+        nm.NavigateTo($"ownershops/{boid}");
+
+    }
+
+    
+        
+        
+    
+}

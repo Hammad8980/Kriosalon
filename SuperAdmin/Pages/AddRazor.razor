@@ -1,0 +1,59 @@
+﻿@page "/addmanager"
+@page "/addmanager/{update}"
+@inject IShopManager eo;
+@inject NavigationManager nm;
+<h3>AddRazor</h3>
+    
+<EditForm Model="shopmodel">
+    <input type="text" @bind="@shopmodel.city" placeholder="Enter city" />
+    <br />
+    <br />
+    <input type="text" @bind="@shopmodel.area" placeholder="Enter area" />
+    <br />
+    <br />
+    <input type="text" @bind="@shopmodel.location" placeholder="Enter location " />
+    <br />
+    <br />
+    <input type="text" @bind="@shopmodel.logurl" placeholder="Enter logo" />
+    <br /><br />
+    <input type="text" @bind="@shopmodel.coverimageurl" placeholder="Enter coverimage" />
+    <br /><br />
+    <input type="text" @bind="@shopmodel.businessdescription" placeholder="Enter business description" />
+    <br /><br />
+    <input type="text" @bind="@shopmodel.phone" placeholder="Enter Phone" />
+    <br /><br />
+<button type="submit" @onclick="saveshop">@buttontitle</button>
+
+</EditForm>
+
+@code {
+    EntShop shopmodel { get; set; } = new EntShop();
+    [Parameter] public string? edit { get; set; }
+    private string? buttontitle { get; set; } = "save";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(edit=="update")
+        {
+            shopmodel = shopmanager.Updateshop;
+            buttontitle = "Update";
+        }
+    }
+
+    protected void saveshop()
+    {
+        if (buttontitle == "save")
+        {
+            Random rand = new Random();
+            shopmodel.shopid = rand.Next(10000, 99999);
+            eo.SaveShop(shopmodel);
+            nm.NavigateTo("shopmanager");
+        }
+        else if (buttontitle == "edit")
+        {
+            eo.IUpdateShop(shopmodel);
+            nm.NavigateTo("shopmanager");
+        }
+       
+    } 
+ }
