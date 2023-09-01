@@ -10,5 +10,6 @@ namespace ShopAdmin.Data
         Task SaveShop(EntShop shop);
 
         Task DeleteShop(int id);
+        Task UpdateShop(EntShop sh);
     }
 }

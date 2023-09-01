@@ -8,5 +8,8 @@ namespace ShopAdmin.Data
     {
          Task<List<EntServices>> GetServices(int shopid);
         Task DeleteServices(int shopid);
+
+        Task SaveService(EntServices eo);
+        Task UpdateServices(EntServices eo);
     }
 }

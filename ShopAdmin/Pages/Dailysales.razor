@@ -1,0 +1,53 @@
+﻿
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex">
+                        <input type="text" placeholder="Enter Customer Name" class="form-control me-2" />
+                        <input type="text" placeholder="Enter Customer Mobile Number" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <select class="form-control">
+                        <option selected>Select Employee</option>
+                        <option>Rasheed</option>
+                        <option>Muhammad Saleem</option>
+                        <option>Shahzad Ali</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-4 border-top">
+                <div class="col-md-12">
+                    <h3 class="pt-2">Add Services</h3>
+                    <div style="height:400px; overflow-y:scroll; padding:20px">
+                        @for (int i = 0; i < 20; i++)
+                        {
+                            <div class="d-flex justify-content-between mb-2 border-bottom">
+                                <p>@(i + 1)</p>
+                                <p>Service Name</p>
+                                <p>Rs.10</p>
+                                <button class="btn btn-sm btn-primary">Add</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6 vh-80 bg-light">
+            <div class="form-control me-2">
+            <p style="font-size:23px">Billing Summary </p>
+            
+        </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}

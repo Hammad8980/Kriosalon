@@ -1,4 +1,5 @@
 ﻿@page "/addemployeeshop/{shopid}"
+@page "/addemployeeshop/{shopid}/{edit}"
 
 
 @using Entities;
@@ -35,19 +36,17 @@
     <input type="text" @bind="@EmployeeModel.enddate" placeholder="Enter End Date " />
     <br />
     <br />
-    <input type="text" @bind="@EmployeeModel.isactive" placeholder="Status " />
-    <br />
-    <br />
+   
+ 
     <br /><br />
-    <button type="submit" @onclick="SaveEmp">Save</button>
+    <button type="submit" @onclick="saveEmployee">Save</button>
 </EditForm>
 
 
-<h3>AddEmployee</h3>
-
 @code {
     EntEmployee EmployeeModel { get; set; } = new EntEmployee();
-
+    [Parameter] public string? edit { get; set; }
+    private string? ButtonTitle { get; set; } = "Save";
     private int shopid;
     [Parameter]
     public string Shopid
@@ -62,15 +61,30 @@
         }
     }
 
-    private void SaveEmp()
+    protected override async Task OnInitializedAsync()
     {
-        Random rand = new Random();
-        EmployeeModel.empid = rand.Next(100000, 999999);
-        EmployeeModel.shopid = shopid;
-        em.SaveEmployee(EmployeeModel);
-        nm.NavigateTo($"/shopemployee/{shopid}");
-
+        if (edit == "update")
+        {
+            EmployeeModel = ShopEmployee.UpdateBO;
+            ButtonTitle = "Update";
+        }
+        //return base.OnInitializedAsync();
     }
 
-
+    private void saveEmployee()
+    {
+        if (ButtonTitle == "Save")
+        {
+            Random rand = new Random();
+            EmployeeModel.empid = rand.Next(100000, 999999);
+            EmployeeModel.shopid = shopid;
+            em.SaveEmployee(EmployeeModel);
+            nm.NavigateTo($"/shopemployee/{shopid}");
+        }
+        else if (ButtonTitle == "Update")
+        {
+            em.UpdateEmployee(EmployeeModel);
+            nm.NavigateTo($"/shopemployee/{shopid}");
+        }
+    }
 }

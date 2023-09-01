@@ -3,8 +3,9 @@
 @using Entities;
 @using ShopAdmin.Data;
 @inject IPackages ob;
+@inject NavigationManager nm;
 
-<h3>Packages</h3>
+<button @onclick="()=>NaviagteToAddPackages(shopid)" class="btn btn-primary">Add Packages</button>
 
 <table class="table table-striped">
     <thead>
@@ -27,9 +28,17 @@
             <td>@item.shopid</td>
             <td>@item.services</td>
             <td>@item.price</td>
-           @* <td>
-                <button @onclick="()=>Delete(item.packageid)">Delete</button>
-            </td>*@
+            <td>
+                <a>
+                    <button @onclick="()=>UpdatePackage(item.packageid)" class="btn btn-primary">Update</button>
+
+                </a>
+            </td>
+           <td>
+                <a><button @onclick="()=>Delete(item.packageid)" class="btn btn-danger">Delete</button>
+
+                </a>
+            </td>
         </tr>
     }
 </table>
@@ -40,21 +49,40 @@
 
 @code {
     private List<EntPackages> listpackages { get; set; } = new List<EntPackages>();
-    private int id;
-    protected override async Task OnInitializedAsync()
-    {
-        listpackages = await ob.GetPackages(id);
-    }
+    private int shopid;
+    
     [Parameter]
-    public string shopid
+    public string Shopid
     {
-        get => id.ToString();
+        get => shopid.ToString();
         set
         {
             if(int.TryParse(value,out int parsed))
             {
-                id = parsed;
+                shopid = parsed;
             }
         }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        listpackages = await ob.GetPackages(shopid);
+    }
+
+    private async Task Delete(int id)
+    {
+        await ob.DeletePackage(id);
+        listpackages = await ob.GetPackages(shopid);
+    }
+    private async Task NaviagteToAddPackages(int shopid)
+    {
+        nm.NavigateTo($"/addpackage/{shopid}");
+    }
+
+    [Parameter] public static EntPackages UpdateBO { get; set; }
+    private async Task UpdatePackage(int id)
+    {
+        UpdateBO = listpackages.Find(x => x.packageid == id);
+
+        nm.NavigateTo($"/addpackage/{shopid}/update");
     }
 }

@@ -7,7 +7,7 @@ namespace ShopAdmin.Data
         Task<List<EntBusinessOwner>> GetBusinessOwner();
 
         Task AddOwner(EntBusinessOwner eo);
-       
-        
+
+        Task UpdateBO(EntBusinessOwner eo);
     }
 }

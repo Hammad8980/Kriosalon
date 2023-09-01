@@ -1,0 +1,68 @@
+﻿@page "/addservices/{shopid}"
+@page "/addservices/{shopid}/{edit}"
+
+@using Entities;
+@using ShopAdmin.Data;
+@inject NavigationManager nm
+@inject IServices ob;
+
+
+<EditForm Model="ServiceModel">
+    <input type="text" @bind="@ServiceModel.price" placeholder="Enter Price" />
+    <br />
+    <br />
+    <input type="text" @bind="@ServiceModel.servicename" placeholder="Enter Service Name" />
+    <br />
+    <br
+
+
+    <button type="submit" @onclick="saveservices">Save</button>
+</EditForm>
+
+
+@code {
+    EntServices ServiceModel { get; set; } = new EntServices();
+    [Parameter] public string? edit { get; set; }
+    private string? ButtonTitle { get; set; } = "Save";
+
+    private int shopid;
+    [Parameter]
+    public string Shopid
+    {
+        get => shopid.ToString();
+        set
+        {
+            if (int.TryParse(value, out int parsedvalue))
+            {
+                shopid = parsedvalue;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (edit == "update")
+        {
+            ServiceModel = Services.UpdateBO;
+            ButtonTitle = "Update";
+        }
+        //return base.OnInitializedAsync();
+    }
+
+    private void saveservices()
+    {
+        if (ButtonTitle == "Save")
+        {
+            Random rand = new Random();
+            ServiceModel.serviceid = rand.Next(100000, 999999);
+            ServiceModel.shopid = shopid;
+            ob.SaveService(ServiceModel);
+            nm.NavigateTo($"/shopservices/{shopid}");
+        }
+        else if (ButtonTitle == "Update")
+        {
+            ob.UpdateServices(ServiceModel);
+            nm.NavigateTo($"/shopservices/{shopid}");
+        }
+    }
+}

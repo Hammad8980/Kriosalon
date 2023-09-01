@@ -50,6 +50,7 @@ namespace FmcApi.Controllers
         }
 
         [HttpPut]
+        [Route("updateemployee")]
         public async Task UpdateEmployee(EntEmployee ebo)
         {
             if (ebo != null)

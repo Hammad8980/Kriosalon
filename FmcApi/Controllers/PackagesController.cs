@@ -44,6 +44,7 @@ namespace FmcApi.Controllers
 
 
         [HttpPut]
+        [Route("updatepackages")]
             public async Task UpdatPackage(EntPackages ebo)
             {
                 if (ebo != null)

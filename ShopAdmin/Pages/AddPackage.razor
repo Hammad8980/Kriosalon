@@ -1,0 +1,75 @@
+﻿
+@page "/addpackage/{shopid}"
+@page "/addpackage/{shopid}/{edit}"
+
+@using Entities;
+@using ShopAdmin.Data;
+@inject NavigationManager nm
+@inject IPackages ob;
+
+
+
+<EditForm Model="PackageModel">
+    <input type="text" @bind="@PackageModel.packagename" placeholder="Enter Package Name" />
+    <br />
+    <br />
+
+
+    <input type="text" @bind="@PackageModel.services" placeholder="Enter Services" />
+    <br />
+    <br />
+
+    <input type="text" @bind="@PackageModel.price" placeholder="Enter Price" />
+    <br />
+    <br />
+
+    <button type="submit" @onclick="savepackages">Save</button>
+</EditForm>
+
+
+
+@code {
+    EntPackages PackageModel { get; set; } = new EntPackages();
+    private int id;
+    [Parameter] public string? edit { get; set; }
+    private string? ButtonTitle { get; set; } = "Save";
+
+    [Parameter]
+    public string Shopid
+    {
+        get => id.ToString();
+        set
+        {
+            if(int.TryParse(value,out int parsed))
+            {
+                id = parsed;
+            }
+        }
+    }
+   
+    protected override async Task OnInitializedAsync()
+    {
+        if (edit == "update")
+        {
+            PackageModel = Packages.UpdateBO;
+            ButtonTitle = "Update";
+        }
+        //return base.OnInitializedAsync();
+    }
+    private void savepackages()
+    {
+        if (ButtonTitle == "Save")
+        {
+            Random rand = new Random();
+            PackageModel.packageid = rand.Next(100000, 999999);
+            PackageModel.shopid = id;
+            ob.SavePackage(PackageModel);
+            nm.NavigateTo($"/shoppackages/{id}");
+        }
+        else if (ButtonTitle == "Update")
+        {
+            ob.Updatepackage(PackageModel);
+            nm.NavigateTo($"/shoppackages/{id}");
+        }
+    }
+}

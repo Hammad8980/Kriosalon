@@ -35,6 +35,9 @@
             <td>@item.phone</td>
             <td>@item.isactive</td>
             <button style="margin:3px" @onclick="() => NavigateToOwnerShops(item.boid)" class="btn btn-primary">Shops</button>
+            <td>
+                <a><button style="margin:3px" @onclick="() => UpdatebusinessOwner(item.boid)" class="btn btn-primary">Update</button></a>
+                </td>
             
         </tr>
     }
@@ -52,5 +55,12 @@
     {
         nm.NavigateTo($"/ownershops/{boid}");
     }
-   
+
+    [Parameter] public static EntBusinessOwner UpdateBO { get; set; }
+    private async Task UpdatebusinessOwner(int id)
+    {
+        UpdateBO = ListBusinesses.Find(x => x.boid == id);
+
+        nm.NavigateTo("addbusinessowner/update");
+    }
 }

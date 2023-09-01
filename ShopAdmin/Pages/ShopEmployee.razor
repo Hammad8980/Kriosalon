@@ -43,8 +43,16 @@
                 <td>@item.joiningdate</td>
                 <td>@item.enddate</td>
                 <td>@item.isactive</td>
-            <button style="margin:3px" @onclick="()=>DeleteEmployee(item.empid)" class="btn btn-danger">Delete</button>
-            </tr>
+                <td>
+                <a><button style="margin:3px" @onclick="()=>DeleteEmployee(item.empid)" class="btn btn-danger">Delete</button>
+                </a>
+            </td>
+            <td>
+                <a>
+                    <button style="margin:3px" @onclick="()=>UpdateEmployee(item.empid)" class="btn btn-primary">Update</button>
+                </a>
+            </td>
+        </tr>
         }
 
     
@@ -86,5 +94,11 @@
         listemployee = await em.GetShopEmployee(shopid);
     }
 
-    
+    [Parameter] public static EntEmployee UpdateBO { get; set; }
+    private async Task UpdateEmployee(int id)
+    {
+        UpdateBO = listemployee.Find(x => x.empid == id);
+
+        nm.NavigateTo($"/addemployeeshop/{shopid}/update");
+    }
 }

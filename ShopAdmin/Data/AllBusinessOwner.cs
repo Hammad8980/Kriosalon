@@ -18,5 +18,9 @@ namespace ShopAdmin.Data
             await _http.PostAsJsonAsync("api/BusinessOwner/savebo", eo);
         }
         
+        public async Task UpdateBO(EntBusinessOwner eo)
+        {
+            await _http.PutAsJsonAsync("api/BusinessOwner/updateowner", eo);
+        }
     }
 }

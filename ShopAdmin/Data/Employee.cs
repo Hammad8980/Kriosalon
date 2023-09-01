@@ -26,5 +26,10 @@ namespace ShopAdmin.Data
             await _http.DeleteAsync("api/Employee/deleteemployee/" + id);
 
         }
+
+        public async Task UpdateEmployee(EntEmployee eo)
+        {
+            await _http.PutAsJsonAsync("api/Employee/updateemployee", eo);
+        }
     }
 }

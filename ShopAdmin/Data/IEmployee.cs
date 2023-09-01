@@ -9,6 +9,7 @@ namespace ShopAdmin.Data
         Task SaveEmployee(EntEmployee eo);
 
         Task DeleteEmployee(int id);
+        Task UpdateEmployee(EntEmployee eo);
         
     }
 }

@@ -1,9 +1,9 @@
-﻿@page "/addownershop/{Boid:int}";
+﻿
 
-
+@page "/addownershop/{boid}";
+@page "/addownershop/{boid}/{edit}";
 @using Entities;
 @using ShopAdmin.Data;
-
 @inject NavigationManager nm;
 @inject IShop bo;
 
@@ -34,22 +34,48 @@
 @code {
     private int selectedBusinessOwnerId;
     private EntShop ShopModel { get; set; } = new EntShop();
+    [Parameter] public string? edit { get; set; }
+    private string? ButtonTitle { get; set; } = "Save";
 
-    [Parameter]
+
     public int boid { get; set; }
+    [Parameter]
+    public string Boid
+    {
+        get => boid.ToString();
+        set
+        {
+            if (int.TryParse(value, out int parsedvalue))
+            {
+                boid = parsedvalue;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (edit == "update")
+        {
+            ShopModel = OwnerShops.UpdateBO;
+            ButtonTitle = "Update";
+        }
+        //return base.OnInitializedAsync();
+    }
 
     private void SaveShop()
     {
-        Random rand=new Random();
-        ShopModel.shopid = rand.Next(100000, 999999);
-        ShopModel.boid = boid;
-        bo.SaveShop(ShopModel);
-        nm.NavigateTo($"ownershops/{boid}");
-
+        if (ButtonTitle == "Save")
+        {
+            Random rand = new Random();
+            ShopModel.shopid = rand.Next(100000, 999999);
+            ShopModel.boid = boid;
+            bo.SaveShop(ShopModel);
+            nm.NavigateTo($"/ownershops/{boid}");
+        }
+        else if (ButtonTitle == "Update")
+        {
+            bo.UpdateShop(ShopModel);
+            nm.NavigateTo($"/ownershops/{boid}");
+        }
     }
-
-    
-        
-        
-    
 }

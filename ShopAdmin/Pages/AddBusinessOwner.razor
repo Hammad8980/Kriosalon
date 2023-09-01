@@ -1,4 +1,5 @@
 ﻿@page "/addbusinessowner"
+@page "/addbusinessowner/{edit}"
 @using Entities;
 @using ShopAdmin.Data;
 @inject NavigationManager nm;
@@ -21,19 +22,39 @@
     <input type="text" @bind="BOModel.phone" placeholder="Enter Phone" />
     <br />  <br />
 
-    <input type="text" @bind="BOModel.isactive" placeholder="Is your Shop Active" />
-    <br />  <br />
     <button type="submit" @onclick=saveBO>Save</button>
 </EditForm>
 
 @code {
     EntBusinessOwner BOModel { get; set; } = new EntBusinessOwner();
+    [Parameter] public string? edit{get;set;}
+    private string? ButtonTitle { get; set; } = "Save";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (edit == "update")
+        {
+            BOModel = BusinessOwner.UpdateBO;
+            ButtonTitle = "Update";
+        }
+        //return base.OnInitializedAsync();
+    }
+
+
 
     private void saveBO()
     {
-        Random rand = new Random();
-        BOModel.boid=rand.Next(100000,999999);
-        bo.AddOwner(BOModel);
-        nm.NavigateTo("allbusinessowner");
+        if (ButtonTitle == "Save")
+        {
+            Random rand = new Random();
+            BOModel.boid = rand.Next(100000, 999999);
+            bo.AddOwner(BOModel);
+            nm.NavigateTo("allbusinessowner");
+        }
+        else if (ButtonTitle == "Update")
+        {
+            bo.UpdateBO(BOModel);
+            nm.NavigateTo("allbusinessowner");
+        }
     }
 }

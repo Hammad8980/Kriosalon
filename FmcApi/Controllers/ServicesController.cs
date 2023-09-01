@@ -45,6 +45,7 @@ namespace FmcApi.Controllers
 
 
         [HttpPut]
+        [Route("updateservices")]
         public async Task UpdatServices(EntServices ebo)
         {
             if (ebo != null)

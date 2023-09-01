@@ -14,5 +14,20 @@ namespace ShopAdmin.Data
         {
             return await _http.GetFromJsonAsync<List<EntPackages>>("api/Packages/getpackagesbyshopid/"+id);
         }
+
+        public async Task DeletePackage(int packageid)
+        {
+            await _http.DeleteAsync("api/Packages/deletepackage/" + packageid);
+
+        }
+        public async Task SavePackage(EntPackages eo)
+        {
+            await _http.PostAsJsonAsync("api/Packages/savepackage", eo);
+        }
+
+        public async Task Updatepackage(EntPackages ep)
+        {
+            await _http.PutAsJsonAsync("api/Packages/updatepackages", ep);
+        }
     }
 }

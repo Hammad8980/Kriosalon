@@ -1,15 +1,16 @@
 ﻿@page "/shopservices/{shopid}"
 
-
+@inject NavigationManager nm;
 @using Entities;
 @using ShopAdmin.Data;
 @inject IServices se;
 
+<button @onclick="()=>NaviagteToServices(shopid)" class="btn btn-primary">Add Services</button>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>ServiceId</th>
             <th>Shop id</th>
             <th>Service Name</th>
             <th>Price</th>
@@ -26,7 +27,17 @@
             <td>@item.servicename</td>
             <td>@item.price</td>
             <td>@item.isactive</td>
-            <button @onclick="()=>Delete(item.serviceid)">Delete</button>
+            
+            <td>
+                <a>
+                    <button style="margin:3px" @onclick="()=>UpdateServices(item.serviceid)" class="btn btn-primary">Update</button>
+                </a>
+            </td>
+            <td>
+                <a>
+                    <button style="margin:3px" @onclick="()=>Delete(item.serviceid)" class="btn btn-danger">Delete</button>
+                </a>
+            </td>
         </tr>
     }
 </table>
@@ -34,17 +45,17 @@
 
 @code {
     private List<EntServices> listservices { get; set; } = new List<EntServices>();
-    private int id;
+    private int shopid;
 
     [Parameter]
-    public string shopid
+    public string Shopid
     {
-        get=>id.ToString();
+        get => shopid.ToString();
         set
         {
             if(int.TryParse(value,out int parsed))
             {
-                id = parsed;
+                shopid = parsed;
             }
         }
     }
@@ -52,14 +63,26 @@
 
     protected override async Task OnInitializedAsync()
     {
-        listservices = await se.GetServices(id);
+        listservices = await se.GetServices(shopid);
     }
 
     private async Task Delete(int id)
     {
         await se.DeleteServices(id);
-        listservices = await se.GetServices(id);
+        listservices = await se.GetServices(shopid);
     }
 
+    private async Task NaviagteToServices(int shopid)
+    {
+        nm.NavigateTo($"/addservices/{shopid}");
+    }
 
+    [Parameter] public static EntServices UpdateBO { get; set; }
+
+    private async Task UpdateServices(int id)
+    {
+        UpdateBO = listservices.Find(x => x.serviceid == id);
+
+        nm.NavigateTo($"/addservices/{shopid}/update");
+    }
 }

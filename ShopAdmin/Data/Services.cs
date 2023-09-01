@@ -19,5 +19,13 @@ namespace ShopAdmin.Data
         {
             await _http.DeleteAsync("api/Services/deleteservice/"+shopid);
         }
+        public async Task SaveService(EntServices eo)
+        {
+            await _http.PostAsJsonAsync("api/Services/saveservice", eo);
+        }
+        public async Task UpdateServices(EntServices eo)
+        {
+            await _http.PutAsJsonAsync("api/Services/updateservices", eo);
+        }
     }
 }

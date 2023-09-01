@@ -13,7 +13,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>Shop Id</th>
             <th>Boid</th>
             <th>City</th>
             <th>Area</th>
@@ -23,7 +23,11 @@
             <th>Cover Image</th>
             <th>Business description</th>
             <th>Active</th>
+            <th>Update</th>
             <th>Delete</th>
+            <th>Employee</th>
+            <th>Service</th>
+            <th>Package</th>
 
         </tr>
     </thead>
@@ -40,13 +44,28 @@
             <td>@item.coverimageurl</td>
             <td>@item.businessdescription</td>
             <td>@item.isactive</td>
-            <button style="margin:3px" @onclick="()=>DeleteShop(item.shopid)" class="btn btn-danger">Delete</button>
-
+            <td>
+                <a>
+                    <button style="margin:3px" @onclick="()=>UpdateShop(item.shopid)" class="btn btn-primary">Update</button>
+                </a>
+            </td>
+            <td>
+            <a>
+                <button style="margin:3px" @onclick="()=>DeleteShop(item.shopid)" class="btn btn-danger">Delete</button>
+                </a>
+            </td>
+            
             <button style="margin:3px" @onclick="()=>NavigateToShopEmployee(item.shopid)" class="btn btn-primary">Employee</button>
+            
+            <td>
+            <a>
+                <button style="margin:3px" @onclick="()=>NavigateToShopServices(item.shopid)" class="btn btn-primary">Services</button>
+                </a>
+            </td>
+            <td>
+                <a> <button style="margin:3px" @onclick="()=>NavigateToShopPackages(item.shopid)" class="btn btn-primary">Packages</button></a>
+            </td>
 
-            <button style="margin:3px" @onclick="()=>NavigateToShopServices(item.shopid)" class="btn btn-primary">Services</button>
-
-            <button style="margin:3px" @onclick="()=>NavigateToShopPackages(item.shopid)" class="btn btn-primary">Packages</button>
         </tr>
             }
          </table>
@@ -99,6 +118,15 @@
     private async Task NavigateToShopPackages(int shopid)
     {
         nm.NavigateTo($"/shoppackages/{shopid}");
+    }
+
+
+    [Parameter] public static EntShop UpdateBO { get; set; }
+
+    private async Task UpdateShop(int id)
+    {
+        UpdateBO = ListShop.Find(x => x.shopid == id);
+        nm.NavigateTo($"/addownershop/{boid}/update");
     }
 }
 
