@@ -8,10 +8,10 @@ namespace ShopAdmin.Data
         public AllBusinessOwner(HttpClient http) { 
             _http = http;
         }
-        public async Task<List<EntBusinessOwner>> GetBusinessOwner()
+        public async Task<List<EntBusinessOwner>> GetBusinessOwner(int id)
         {
 
-            return await _http.GetFromJsonAsync<List<EntBusinessOwner>>("api/BusinessOwner/getowners");
+            return await _http.GetFromJsonAsync<List<EntBusinessOwner>>("api/BusinessOwner/GetBusinessOwner/"+id);
         }
         public async Task AddOwner(EntBusinessOwner eo)
         {

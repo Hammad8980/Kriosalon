@@ -71,9 +71,9 @@ namespace FmcApi.Controllers
             return new JsonResult(entBusinessOwners);
         }
 
+        
         [HttpGet]
         [Route("GetOwnerbyid/{boid}")]
-       
         public async Task<JsonResult> GetOwnersShop(int boid)
         {
             
@@ -81,6 +81,16 @@ namespace FmcApi.Controllers
             entBusinesses = await DalShop.GetOwnerShop(boid);
             return new JsonResult(entBusinesses);
 
+        }
+
+        [HttpGet]
+        [Route("GetBusinessOwner/{boid}")]
+
+        public async Task<JsonResult> GetBusinessOwnerById(int boid)
+        {
+            List<EntBusinessOwner> entBusinessOwners = new List<EntBusinessOwner>();
+            entBusinessOwners = await DalBusinessOwner.GetBusinessOwnerById(boid);
+            return new JsonResult(entBusinessOwners);
         }
     }
 }

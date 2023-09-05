@@ -4,7 +4,7 @@ namespace ShopAdmin.Data
 {
     public interface IAllBusinessOwner
     {
-        Task<List<EntBusinessOwner>> GetBusinessOwner();
+        Task<List<EntBusinessOwner>> GetBusinessOwner(int id);
 
         Task AddOwner(EntBusinessOwner eo);
 
