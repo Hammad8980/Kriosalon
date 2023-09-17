@@ -1,9 +1,6 @@
 ﻿@page "/ownershops/{boid}"
 @using ShopAdmin.Data;
 @using Entities;
-@using System.ComponentModel
-@using AntDesign.TableModels
-@using AntDesign.Core.Extensions
 
 @inject IShop so;
 @inject IAllBusinessOwner bo;
@@ -19,22 +16,43 @@
 
     <ActionColumn Title="Action">
         <Space Size=@("middle")>
+ 
             <SpaceItem>
-                <a>Delete</a>
+                <button style="margin:3px" @onclick="()=>NavigateToShopPackages(711170)" class="btn btn-primary">Packages</button>
+               
             </SpaceItem>
-        </Space>
+                    <button style="margin:3px" @onclick="()=>NavigateToShopServices(711170)" class="btn btn-primary">Services</button>
+
+            <SpaceItem>
+               
+            <button style="margin:3px" @onclick="()=>NavigateToShopEmployee(711170)" class="btn btn-primary">Employee</button>
+            </SpaceItem>
+
+            <SpaceItem>
+               
+                    <button style="margin:3px" @onclick="()=>DeleteShop(711170)" class="btn btn-danger">Delete</button>
+            </SpaceItem>
+
+            <SpaceItem>
+                    <button style="margin:3px" @onclick="()=>UpdateShop(711170)" class="btn btn-primary">Update</button>
+               
+            </SpaceItem>
+
+            </Space>
     </ActionColumn>
 </Table>
 
 @code
 {
     private List<EntShop> ListShop { get; set; } = new List<EntShop>();
-    EntShop[] data = new EntShop[]{};
+    EntShop[] data = new EntShop[] { };
+
     private int boid;
 
     protected override async Task OnInitializedAsync()
     {
         ListShop = await so.GetBusinessOwnerShop(boid);
+        data = ListShop.ToArray();
     }
 
     [Parameter]
@@ -52,6 +70,7 @@
 
     private async Task NavigateToAddShop(int boid)
     {
+
         nm.NavigateTo($"/addownershop/{boid}");
     }
 
@@ -87,6 +106,7 @@
     }
 
 
+
     void definitions(string propertyName, object column)
     {
         if (propertyName == "Tags")
@@ -109,10 +129,6 @@
 
             return;
         }
-
-        // You can use the `SetValue` extension method to set parameters for columns.
-        column.SetValue("Sortable", true);
-        column.SetValue("Filterable", true);
     }
 }
 

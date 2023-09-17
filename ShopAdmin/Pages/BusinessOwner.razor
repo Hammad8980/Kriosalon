@@ -14,12 +14,17 @@
 
 
 <Table TItem="EntBusinessOwner" DataSource="@data">
-    <GenerateColumns Range="1.." Definitions=definitions />
+    <GenerateColumns Range="0.." Definitions=definitions />
     <ActionColumn Title="Action">
         <Space Size=@("middle")>
            
+           
+
             <SpaceItem>
-                <a>Delete</a>
+                <Button @onclick="() => NavigateToOwnerShops(637889)" class="btn btn-primary">Shops</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button @onclick="() => UpdatebusinessOwner(637889)" class="btn btn-green">Update</Button>
             </SpaceItem>
         </Space>
     </ActionColumn>
@@ -35,13 +40,14 @@
     }
     private async Task NavigateToOwnerShops(int boid)
     {
+
         nm.NavigateTo($"/ownershops/{boid}");
     }
 
     [Parameter] public static EntBusinessOwner UpdateBO { get; set; }
     private async Task UpdatebusinessOwner(int id)
     {
-        UpdateBO = ListBusinesses.Find(x => x.boid == id);
+        UpdateBO = ListBusinesses.Find(x => x.boid == 637889);
 
         nm.NavigateTo("addbusinessowner/update");
     }

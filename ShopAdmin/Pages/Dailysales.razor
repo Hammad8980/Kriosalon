@@ -1,7 +1,12 @@
-﻿
-<div class="container">
+﻿@using System.ComponentModel
+@using AntDesign.TableModels
+@using AntDesign.Core.Extensions
+@using Entities;
+
+<div class="container mt-5">
     <div class="row">
-        <div class="col-md-6">
+        <!-- Left Column - Add Services -->
+        <div class="col-md-6 order-md-0">
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-flex">
@@ -13,12 +18,28 @@
             <i class="fas fa-cloud"></i>
             <div class="row mt-2">
                 <div class="col-md-12">
-                    <select class="form-control">
-                        <option selected>Select Employee <i class="bi bi-chevron-down"></i> </option>
-                        <option>Rasheed</option>
-                        <option>Muhammad Saleem</option>
-                        <option>Shahzad Ali</option>
-                    </select>
+                    <TreeSelect TItem="string"
+                                Style="width:100%;"
+                    @bind-Values="values"
+                                DropdownStyle="max-height:400px;overflow:auto;"
+                                Placeholder="Please select"
+                                                    AllowClear
+                                                    Multiple
+                                                    TreeDefaultExpandAll
+                                                    EnableSearch
+                                MatchedStyle="font-weight: bold">
+                       
+                            @foreach(var i in values)
+                            {
+                                <TreeNode TItem="string" Key="i" Title="Employee" />
+                               
+                            }
+                           
+                        
+                    </TreeSelect>
+                        @*@JsonSerializer.Serialize(values);*@
+
+                   
                 </div>
             </div>
             <div class="row mt-4 border-top">
@@ -37,49 +58,62 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <div class="col-md-6 vh-80 bg-light">
-            <div class="form-control me-2">
-            <p style="font-size:23px">Billing Summary </p>    
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Billing Summary</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Service Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 3; i++)
+                            {
+                                <tr>
+                                    <td>@{
+                                            var index = i + 1;
+                                        }@index</td>
+                                    <td>Service Name</td>
+                                    <td>200</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-8"><strong>Grand Total</strong></div>
+                        <div class="col-4">1000</div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary">Add Tip</button>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-8"><strong>Change</strong></div>
+                        <div class="col-4">0</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-8"><strong>Payable Amount</strong></div>
+                        <div class="col-4">0</div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-success">Checkout</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            @for(int i=0;i<3; i++)
-            {
-                    <div class="d-flex justify-content-around">
-                     <p>@(i+1)</p>
-                     <p>servicename</p>
-                     <p>200</p>
-            
-                     </div>
-            }
-            </div>
-            <div class="d-flex justify-content-around">
-            <p>Grand Total</p>
-            <p>1000</p>
-            </div>
-
-            <div>
-                <button class="btn btn-primary ">Add Tip</button>
-            </div>
-
-            <div class="d-flex justify-content-around">
-                <p>Change</p>
-                <p>0</p>
-            </div>
-            <div>
-                <p>Payable Amount</p>
-                <p>0</p>
-            </div>
-
-            <div class="d-flex align-items-center justify-content-end flex-column" style="height: 180px ;">
-                <button>Checkout</button>
-            </div>
-        </div>
-
     </div>
 </div>
 @code {
-
+    private IEnumerable<string> values = new[] { "leaf1",  "leaf2", "leaf3" };
+    private EntEmployee[] data = new EntEmployee[]
+    {
+    new EntEmployee {},
+    new EntEmployee { }
+    };
+}
 }

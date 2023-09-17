@@ -1,5 +1,7 @@
 ﻿@page "/shopservices/{shopid}"
-
+@using System.ComponentModel
+@using AntDesign.TableModels
+@using AntDesign.Core.Extensions
 @inject NavigationManager nm;
 @using Entities;
 @using ShopAdmin.Data;
@@ -7,44 +9,27 @@
 
 <button @onclick="()=>NaviagteToServices(shopid)" class="btn btn-primary">Add Services</button>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ServiceId</th>
-            <th>Shop id</th>
-            <th>Service Name</th>
-            <th>Price</th>
-            <th>Is active</th>
-            <th>Action</th>
+<Table TItem="EntServices" DataSource="@data">
 
-        </tr>
-    </thead>
-    @foreach (var item in listservices)
-    {
-        <tr>
-            <td>@item.serviceid</td>
-            <td>@item.shopid</td>
-            <td>@item.servicename</td>
-            <td>@item.price</td>
-            <td>@item.isactive</td>
-            
-            <td>
-                <a>
-                    <button style="margin:3px" @onclick="()=>UpdateServices(item.serviceid)" class="btn btn-primary">Update</button>
-                </a>
-            </td>
-            <td>
-                <a>
-                    <button style="margin:3px" @onclick="()=>Delete(item.serviceid)" class="btn btn-danger">Delete</button>
-                </a>
-            </td>
-        </tr>
-    }
-</table>
+    <GenerateColumns Range="0.." Definitions=definitions />
 
+    <ActionColumn Title="Action">
+        <Space Size=@("middle")>
+            <SpaceItem>
+                    <button style="margin:3px" @onclick="()=>Delete(527058)" class="btn btn-danger">Delete</button>
+                
+                </SpaceItem>
+            <SpaceItem>
+                    <button style="margin:3px" @onclick="()=>UpdateServices(121122)" class="btn btn-primary">Update</button>
+                
+            </SpaceItem>
+        </Space>
+    </ActionColumn>
+</Table>
 
 @code {
     private List<EntServices> listservices { get; set; } = new List<EntServices>();
+    EntServices[] data = new EntServices[] { };
     private int shopid;
 
     [Parameter]
@@ -64,6 +49,7 @@
     protected override async Task OnInitializedAsync()
     {
         listservices = await se.GetServices(shopid);
+        data = listservices.ToArray();
     }
 
     private async Task Delete(int id)
@@ -84,5 +70,29 @@
         UpdateBO = listservices.Find(x => x.serviceid == id);
 
         nm.NavigateTo($"/addservices/{shopid}/update");
+    }
+
+    void definitions(string propertyName, object column)
+    {
+        if (propertyName == "Tags")
+        {
+            var tagCol = ((Column<string[]>)column);
+
+            tagCol.CellRender = cellData =>
+    @<span>
+        @foreach (var tag in cellData.FieldValue)
+            {
+                var color = tag.Length > 5 ? "geekblue" : "green";
+                if (tag == "loser")
+                {
+                    color = "volcano";
+                }
+                <Tag Color="@color">@tag</Tag>
+            }
+        </span>
+    ;
+
+            return;
+        }
     }
 }
