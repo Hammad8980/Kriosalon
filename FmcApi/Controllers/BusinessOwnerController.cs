@@ -23,8 +23,10 @@ namespace FmcApi.Controllers
                 new SqlParameter("@emailadress",ebo.emailadress),
                 new SqlParameter("@phone",ebo.phone),
                 new SqlParameter("@cnic",ebo.cnic),
-                new SqlParameter("@isactive",ebo.isactive)
-
+                new SqlParameter("@isactive",ebo.isactive),
+                new SqlParameter("@username",ebo.username),
+                new SqlParameter("@password",ebo.password),
+                new SqlParameter("@role",ebo.role)
                 };
                 await MyCrud.CRUD("InsertBusinessOwner", sp);
             }
@@ -57,7 +59,10 @@ namespace FmcApi.Controllers
                 new SqlParameter("@emailadress",ebo.emailadress),
                 new SqlParameter("@phone",ebo.phone),
                 new SqlParameter("@cnic",ebo.cnic),
-                new SqlParameter("@isactive",ebo.isactive)
+                new SqlParameter("@isactive",ebo.isactive),
+                new SqlParameter("@username",ebo.username),
+                new SqlParameter("@password",ebo.password),
+                new SqlParameter("@role",ebo.role)
                 };
                 await MyCrud.CRUD("UpdateBusinessOwner", sp);
             }

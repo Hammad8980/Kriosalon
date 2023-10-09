@@ -32,7 +32,10 @@ namespace DAL
                             ebw.emailadress = sdr["emailadress"].ToString();
                             ebw.phone = sdr["phone"].ToString();
                             ebw.cnic = sdr["cnic"].ToString();
-           
+                            ebw.username = sdr["username"].ToString();
+                            ebw.password = int.Parse(sdr["password"].ToString());
+                            ebw.role = sdr["role"].ToString();
+
                             ebw.isactive = sdr.GetBoolean(sdr.GetOrdinal("isactive"));
                             listOwners.Add(ebw);
 
@@ -72,6 +75,9 @@ namespace DAL
                             ebw.emailadress = sdr["emailadress"].ToString();
                             ebw.phone = sdr["phone"].ToString();
                             ebw.cnic = sdr["cnic"].ToString();
+                            ebw.username = sdr["username"].ToString();
+                            ebw.password = int.Parse(sdr["password"].ToString());
+                            ebw.role = sdr["role"].ToString();
 
                             ebw.isactive = sdr.GetBoolean(sdr.GetOrdinal("isactive"));
                             listOwners.Add(ebw);
@@ -89,6 +95,43 @@ namespace DAL
             }
         }
 
+        public static async Task<UserAccount> Authenticate(string username, int password)
+        {
+            try
+            {
+                using (SqlConnection con = DBHelper.GetConnection())
+                {
+                    await con.OpenAsync();
 
+                    using (SqlCommand cmd = new SqlCommand("sp_Authentication", con))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        SqlDataReader sdr = await cmd.ExecuteReaderAsync();
+
+                        UserAccount entBusinessOwner = new UserAccount();
+                        while (await sdr.ReadAsync())
+                        {
+                            entBusinessOwner.UserName = sdr["firstname"].ToString();                           
+                            entBusinessOwner.Role = sdr["role"].ToString();
+                            entBusinessOwner.BOId = sdr["boid"].ToString();
+
+                        }
+                        await con.CloseAsync();
+                        return entBusinessOwner;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new UserAccount();
+            }
+        }
+            
     }
-}
+    }
+
+
+    
+

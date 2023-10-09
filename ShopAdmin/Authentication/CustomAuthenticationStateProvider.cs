@@ -27,7 +27,8 @@ namespace ShopAdmin.Authentication
                 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new Claim(ClaimTypes.Name,userSession.UserName),
-                new Claim(ClaimTypes.Role,userSession.Role)
+                new Claim(ClaimTypes.Role,userSession.Role),
+                new Claim("BOId",userSession.BOId)
 
             }, "CustomAuth"));
                 return await Task.FromResult(new AuthenticationState(claimsPrincipal));

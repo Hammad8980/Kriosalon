@@ -5,6 +5,7 @@
 @inject AuthenticationStateProvider authstateprovider
 @inject NavigationManager nav
 
+
 <div class="row">
 <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
 <div class="mb-3 text-center">
@@ -19,30 +20,28 @@
 
 <input @bind="model.Password" type="password" class="form-control" placeholder= "Password" />
 </div>
-<div class="mb-3 d-grid gap-2">
-<button @onclick="Authenticate" class="btn btn-primary">Login</button>
-</div>
 
 <div class="mb-3 d-grid gap-2">
-<button @onclick="Signup" class="btn btn-primary">SIGN UP</button>
+<button @onclick="Authenticate" class="btn btn-primary">Login</button>
 </div>
 </div>
 </div>
 
 @code {
-    private class Model
+    public class Model
     {
         public string UserName { get; set;}
-        public string Password { get; set; }
+        public int Password { get; set; }
+        
     }
 
-    private Model model=new Model();
+    public Model model=new Model();
 
-    private async Task Authenticate()
+    public async Task Authenticate()
     {
-        var userAccount = userAccountService.GetByUserName(model.UserName);
+        var userAccount =await userAccountService.GetByUserName(model.UserName,model.Password);
 
-        if (userAccount == null || userAccount.Password != model.Password)
+        if (userAccount.UserName==null || userAccount.Role==null)
         {
             await js.InvokeVoidAsync("alert", "Invalid User Name or Password");
             return;
@@ -52,14 +51,14 @@
     {
 
             UserName = userAccount.UserName,
-            Role = userAccount. Role
-    });
+            Role = userAccount.Role,
+           BOId=userAccount.BOId
+    }
+        );
 
        nav.NavigateTo("/allbusinessowner", true);
 }
 
-    private async Task Signup()
-        {
-            
-        }
+    
 }
+

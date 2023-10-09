@@ -7,6 +7,12 @@
 
 
 <EditForm Model="BOModel">
+    <input type="text" @bind="BOModel.username" placeholder="Enter User Name" />
+    <br />  <br />
+    <input type="text" @bind="BOModel.password" placeholder="Enter Password" />
+    <br />  <br />
+    <input type="text" @bind="BOModel.role" placeholder="Enter Role" />
+    <br />  <br />
     <input type="text" @bind="@BOModel.firstname" placeholder="Enter First Name"/>
     <br />
     <br />

@@ -1,5 +1,14 @@
 ﻿@page "/"
-   
+@attribute [Authorize(Roles="administrator")]   
 
-<Dailysales></Dailysales>
+
+<AuthorizeView>
+    <Authorized>
+        <Dailysales></Dailysales>
+    </Authorized>
+    <NotAuthorized>
+        <p>Not authrized</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 

@@ -17,5 +17,10 @@ namespace Entities
         public bool isactive { get; set; }
         public DateTime creationdatetime { get; set; }
 
+        public string username { get;set; }
+        public int password { get; set; }
+
+        public string role { get; set; }
+
     }
 }

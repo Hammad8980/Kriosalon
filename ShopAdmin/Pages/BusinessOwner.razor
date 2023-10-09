@@ -5,6 +5,7 @@
 @using Entities;
 @using ShopAdmin.Data;
 
+
 @inject IAllBusinessOwner ob;
 @inject NavigationManager nm;
 
@@ -32,9 +33,14 @@
 @code {
     private List<EntBusinessOwner> ListBusinesses { get; set; } = new List<EntBusinessOwner>();
     EntBusinessOwner[] data = new EntBusinessOwner[] { };
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState{ get; set; }
     protected override async Task OnInitializedAsync()
     {
-        ListBusinesses = await ob.GetBusinessOwner(637889);
+        var autState = await authenticationState;
+        int boid = Convert.ToInt32(autState.User.FindFirst("BOId")?.Value);
+        ListBusinesses = await ob.GetBusinessOwner(boid);
         data = ListBusinesses.ToArray();
 
     }
